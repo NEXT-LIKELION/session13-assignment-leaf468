@@ -1,15 +1,18 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "@emotion/styled";
-import { GNB } from "components/GNB"; // GNB 컴포넌트 경로 확인 필요
-import { GNB_TYPE, PRODUCTS } from "constants/common";
-import { Button } from "components/Button"; // Button 컴포넌트 경로 확인 필요
-import { CartContext } from "context/CartContext";
+import { GNB } from "../components/GNB";
+import { GNB_TYPE, PRODUCTS } from "../constants/common";
+import { Button } from "../components/Button";
+import { useCartStore } from "../store/CartStore";
 
 function ProductPage() {
     const { id } = useParams();
     const product = PRODUCTS[parseInt(id)];
-    const { cart, setCart } = useContext(CartContext);
+
+    // 선택적 구독 방식으로 변경
+    const cart = useCartStore((state) => state.cart);
+    const setCart = useCartStore((state) => state.setCart);
 
     const handleAddToCart = (product) => {
         setCart([...cart, product]);

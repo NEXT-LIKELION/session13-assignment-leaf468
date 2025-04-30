@@ -3,18 +3,16 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
 import ProductPage from "./pages/ProductPage";
-import { CartProvider } from "context/CartContext";
+// CartProvider 임포트 제거
 
 function App() {
     return (
         <Router>
-            <CartProvider>
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/product/:id" element={<ProductPage />} />
-                    <Route path="/cart" element={<CartPage />} />
-                </Routes>
-            </CartProvider>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/product/:id" element={<ProductPage />} />
+                <Route path="/cart" element={<CartPage />} />
+            </Routes>
         </Router>
     );
 }

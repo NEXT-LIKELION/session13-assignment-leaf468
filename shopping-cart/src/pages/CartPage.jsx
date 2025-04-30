@@ -1,56 +1,51 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "@emotion/styled";
-import { GNB } from "components/GNB";
-import { GNB_TYPE } from "constants/common";
-import { ProductInCart } from "components/ProductInCart";
-import { Box } from "styles/StyleComponent";
-import { CartContext } from "context/CartContext";
+import { GNB } from "../components/GNB";
+import { GNB_TYPE } from "../constants/common";
+import { ProductInCart } from "../components/ProductInCart";
+import { useCartStore } from "../store/CartStore";
+import { Box } from "../styles/StyleComponent";
 
 function CartPage() {
-    const { cart, setCart } = useContext(CartContext);
+    // 선택적 구독 방식으로 변경
+    const cart = useCartStore((state) => state.cart);
+
     return (
-        <Base>
-            <GNB type={GNB_TYPE.MAIN} />
-            <Inner>
-                <Box gap={30}>
-                    {!cart || cart.length <= 0 ? (
-                        <Text>등록된 상품이 없습니다.</Text>
-                    ) : (
-                        cart.map((product, id) => (
-                            <ProductInCart
-                                key={id}
-                                product={product}
-                                cart={cart}
-                                setCart={setCart}
-                            />
+        <div>
+            <GNB type={GNB_TYPE.BACK} />
+            <Container>
+                <Title>장바구니</Title>
+                <Box gap={10}>
+                    {cart.length > 0 ? (
+                        cart.map((product, index) => (
+                            <ProductInCart key={index} product={product} />
                         ))
+                    ) : (
+                        <EmptyCart>장바구니가 비어 있습니다.</EmptyCart>
                     )}
                 </Box>
-            </Inner>
-        </Base>
+            </Container>
+        </div>
     );
 }
 
-export default CartPage;
+const Container = styled.div`
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+`;
 
-const Base = styled.div`
-    width: 100%;
+const Title = styled.h1`
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
 `;
-const Inner = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 72px 20px 69px;
-`;
-const Text = styled.div`
-    font-family: "Pretendard Variable", sans-serif;
-    font-size: 20px;
-    font-weight: 550;
-    line-height: 135%;
+
+const EmptyCart = styled.p`
+    font-size: 16px;
     text-align: center;
-    color: #717171;
-
-    width: 100%;
-    margin-top: 60px;
+    margin: 40px 0;
+    color: #888;
 `;
+
+export default CartPage;
